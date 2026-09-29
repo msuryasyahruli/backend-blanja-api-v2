@@ -104,6 +104,26 @@ const experienceSchema = Joi.object({
   }),
 });
 
+const portfolioSchema = Joi.object({
+  user_id: Joi.string().required(),
+  app_name: Joi.string().max(100).required().messages({
+    "string.empty": "App name is required",
+    "string.max": "App name must be less than or equal to 100 characters",
+  }),
+  type: Joi.string().max(100).required().messages({
+    "string.empty": "Type is required",
+    "string.max": "Type must be less than or equal to 100 characters",
+  }),
+  link: Joi.string().required().uri().messages({
+    "string.empty": "Link is required",
+    "string.uri": "Link must be a URL",
+  }),
+  photo: Joi.string().required().uri().messages({
+    "string.empty": "Photo is required",
+    "string.uri": "Photo must be a URL",
+  }),
+});
+
 const validate = (schema) => {
   return (req, res, next) => {
     const { error, value } = schema.validate(req.body, {
@@ -129,5 +149,6 @@ module.exports = {
   workerProfileSchema,
   companyProfileSchema,
   experienceSchema,
+  portfolioSchema,
   validate,
 };
