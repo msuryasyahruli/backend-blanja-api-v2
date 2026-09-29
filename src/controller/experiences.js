@@ -4,6 +4,7 @@ const {
   updateExperience,
   deleteExperience,
   findId,
+  getDetailExperience,
 } = require("../model/experiences");
 const commonHelper = require("../helper/common");
 const { v4: uuidv4 } = require("uuid");
@@ -11,8 +12,8 @@ const { v4: uuidv4 } = require("uuid");
 const experienceController = {
   getExperiences: async (req, res) => {
     try {
-      const { id } = req.params;
-      const { rows } = await getExperiences(id);
+      const { id: user_id } = req.params;
+      const { rows } = await getExperiences(user_id);
       if (!rows.length) {
         return res.status(404).json({
           message: "Experience not found",
@@ -20,6 +21,27 @@ const experienceController = {
       }
 
       commonHelper.response(res, rows, 200, "Get experiences successful");
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
+
+  detailExperience: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { rows } = await getDetailExperience(id);
+      if (!rows.length) {
+        return res.status(404).json({
+          message: "Experience not found",
+        });
+      }
+      commonHelper.response(
+        res,
+        rows[0],
+        200,
+        "Get detail experience successful",
+      );
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Internal server error" });
@@ -69,7 +91,7 @@ const experienceController = {
         working_end,
         description,
       } = req.body;
-      const rowCount = await findId(id);
+      const { rowCount } = await findId(id);
       if (!rowCount) {
         return res.status(404).json({
           message: "Experience not found",

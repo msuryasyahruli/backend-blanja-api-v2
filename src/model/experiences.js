@@ -7,6 +7,10 @@ const getExperiences = (id) => {
   );
 };
 
+const getDetailExperience = (id) => {
+  return pool.query(`SELECT * FROM experiences WHERE id = $1`, [id]);
+};
+
 const createExperience = (data) => {
   const {
     id,
@@ -45,7 +49,7 @@ const deleteExperience = (id) => {
 };
 
 const findId = (id) => {
-  return pool.query(`SELECT * FROM experiences WHERE id = $1`, [id]);
+  return pool.query(`SELECT id FROM experiences WHERE id = $1`, [id]);
 };
 
 module.exports = {
@@ -54,4 +58,5 @@ module.exports = {
   updateExperience,
   deleteExperience,
   findId,
+  getDetailExperience,
 };

@@ -3,7 +3,8 @@ const router = express.Router();
 const experienceController = require("../controller/experiences");
 const { validate, experienceSchema } = require("../middleware/validate");
 
-router.get("/:id", experienceController.getExperiences);
+router.get("/user/:id", experienceController.getExperiences);
+router.get("/:id", experienceController.detailExperience);
 router.post(
   "/",
   validate(experienceSchema),
