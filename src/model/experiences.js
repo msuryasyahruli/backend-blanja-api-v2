@@ -39,7 +39,7 @@ const updateExperience = (data, id) => {
   const { position, company_name, working_start, working_end, description } =
     data;
   return pool.query(
-    `UPDATE experiences SET position = COALESCE($1, position), company_name = COALESCE($2, company_name), working_start = COALESCE($3, working_start), working_end = COALESCE($4, working_end), description = COALESCE($5, description) WHERE id = $6 RETURNING *`,
+    `UPDATE experiences SET position = COALESCE($1, position), company_name = COALESCE($2, company_name), working_start = COALESCE($3, working_start), working_end = COALESCE($4, working_end), description = COALESCE($5, description), updated_at=NOW() WHERE id = $6 RETURNING *`,
     [position, company_name, working_start, working_end, description, id],
   );
 };
