@@ -82,6 +82,28 @@ const companyProfileSchema = Joi.object({
   }),
 });
 
+const experienceSchema = Joi.object({
+  user_id: Joi.string().required(),
+  position: Joi.string().max(100).required().messages({
+    "string.empty": "Position is required",
+    "string.max": "Position must be less than or equal to 100 characters",
+  }),
+  company_name: Joi.string().max(100).required().messages({
+    "string.empty": "Company name is required",
+    "string.max": "Company name must be less than or equal to 100 characters",
+  }),
+  working_start: Joi.date().required().messages({
+    "string.empty": "Working start is required",
+  }),
+  working_end: Joi.date().required().messages({
+    "string.empty": "Working end is required",
+  }),
+  description: Joi.string().max(200).required().messages({
+    "string.empty": "Description is required",
+    "string.max": "Description must be less than or equal to 200 characters",
+  }),
+});
+
 const validate = (schema) => {
   return (req, res, next) => {
     const { error, value } = schema.validate(req.body, {
@@ -106,5 +128,6 @@ module.exports = {
   registerSchema,
   workerProfileSchema,
   companyProfileSchema,
+  experienceSchema,
   validate,
 };
